@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
-class Item:
-    def __init__(self, name, sell_in, quality):
-        self.name = name
-        self.sell_in = sell_in
-        self.quality = quality
-
-    def __repr__(self):
-        return "%s: %s, %s" % (self.__class__.__name__, self.sell_in, self.quality)
-
 class GildedRose(object):
     def __init__(self, items):
         self.items = [self.wrapItemInClass(item) for item in items]
@@ -26,8 +16,24 @@ class GildedRose(object):
         }
         if item.name in special_item_classes:
             return special_item_classes[item.name](item.name, item.sell_in, item.quality)
+        elif item.name.startswith('Conjured'):
+            return ConjuredItem(item.name, item.sell_in, item.quality)
         else:
             return TypicalItem(item.name, item.sell_in, item.quality)
+
+
+class Item:
+    def __init__(self, name, sell_in, quality):
+        self.name = name
+        self.sell_in = sell_in
+        self.quality = quality
+
+    def __repr__(self):
+        return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
+
+class Sulfuras(Item):
+    def update(self):
+        pass
 
 class TypicalItem(Item):
     def _update_sell_in(self):
@@ -47,7 +53,6 @@ class TypicalItem(Item):
         return self
 
     def update(self):
-        # print(self.__methods__())
         self._update_sell_in()
         self._update_quality()
         self._readjust_quality_in_bounds()
@@ -62,9 +67,13 @@ class AgedBrie(TypicalItem):
             self.quality +=2
         return self
 
-class Sulfuras(Item):
-    def update(self):
-        pass
+class ConjuredItem(TypicalItem):
+    def _update_quality(self):
+        if self.sell_in >= 0:
+            self.quality -=2
+        else:
+            self.quality -=4
+        return self
 
 class BackstagePasses(TypicalItem):
     def _update_quality(self):
@@ -76,13 +85,13 @@ class BackstagePasses(TypicalItem):
     @staticmethod
     def __backstage_passes_increase_rate_for_sell_in(sell_in):
         ## hacky one-liner:
-        return 3 - min(10, sell_in) / 5
-        # if sell_in >= 10:
-        #     return 1
-        # if sell_in in range(5, 10):
-        #     return 2
-        # if sell_in in range(0, 5):
-        #     return 3
+        # return 3 - min(10, sell_in) / 5
+        if sell_in >= 10:
+            return 1
+        if sell_in in range(5, 10):
+            return 2
+        if sell_in in range(0, 5):
+            return 3
 
 if __name__ == '__main__':
     items = [Item("Aged Brie", 1, 48)]
