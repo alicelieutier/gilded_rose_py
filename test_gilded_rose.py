@@ -31,18 +31,18 @@ class GildedRoseTest(unittest.TestCase):
         expected_decay = [(9, 1), (8, 0), (7, 0), (6, 0), (5, 0)]
         self.assertDecayOverNDays(gilded_rose, items[0], expected_decay)
 
-    # defensive testing - IMPLEMENT
-    # def test_quality_negative(self):
-    #     items = [Item("foo", 10, -10)]
-    #     gilded_rose = GildedRose(items)
-    #     expected_decay = [(9, 0)]
-    #     self.assertDecayOverNDays(gilded_rose, items[0], expected_decay)
-    #
-    # def test_quality_more_than_50(self):
-    #     items = [Item("foo", 10, 200)]
-    #     gilded_rose = GildedRose(items)
-    #     expected_decay = [(9, 50)]
-    #     self.assertDecayOverNDays(gilded_rose, items[0], expected_decay)
+    # defensive testing
+    def test_quality_negative(self):
+        items = [Item("foo", 10, -10)]
+        gilded_rose = GildedRose(items)
+        expected_decay = [(9, 0)]
+        self.assertDecayOverNDays(gilded_rose, items[0], expected_decay)
+
+    def test_quality_more_than_50(self):
+        items = [Item("foo", 10, 200)]
+        gilded_rose = GildedRose(items)
+        expected_decay = [(9, 50)]
+        self.assertDecayOverNDays(gilded_rose, items[0], expected_decay)
 
     # test special items
     def test_aged_brie(self):
