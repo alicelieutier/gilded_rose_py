@@ -2,13 +2,17 @@
 
 class GildedRose(object):
     def __init__(self, items):
-        self.items = [self.wrapItemInClass(item) for item in items]
+        # this constructor is mutating the array outside on purpose
+        for i in range(len(items)):
+            items[i] = self.wrapItemInClass(items[i])
+        self.items = items
 
     def update_quality(self):
         for item in self.items:
             item.update()
 
-    def wrapItemInClass(self, item):
+    @staticmethod
+    def wrapItemInClass(item):
         special_item_classes = {
             "Aged Brie": AgedBrie,
             "Backstage passes to a TAFKAL80ETC concert": BackstagePasses,
@@ -20,7 +24,6 @@ class GildedRose(object):
             return ConjuredItem(item.name, item.sell_in, item.quality)
         else:
             return TypicalItem(item.name, item.sell_in, item.quality)
-
 
 class Item:
     def __init__(self, name, sell_in, quality):
@@ -97,5 +100,6 @@ if __name__ == '__main__':
     items = [Item("Aged Brie", 1, 48)]
     gilded_rose = GildedRose(items)
     for i in range(1, 5):
+        print(items)
         print(gilded_rose.items)
         gilded_rose.update_quality()

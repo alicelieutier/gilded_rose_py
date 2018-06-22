@@ -37,9 +37,8 @@ if __name__ == "__main__":
              Item(name="Backstage passes to a TAFKAL80ETC concert", sell_in=0, quality=10),
 
             # Conjured items degrade twice as fast as typical items (-2, -4)
-            # /!\ not implemented yet
-             Item(name="Conjured Mana Cake", sell_in=3, quality=6),  # <-- :O
-             Item(name="Conjured Mana Cake", sell_in=0, quality=6),  # <-- :O
+             Item(name="Conjured Mana Cake", sell_in=3, quality=6),
+             Item(name="Conjured Mana Cake", sell_in=0, quality=6),
             ]
 
     days = 2
